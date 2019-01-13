@@ -14,6 +14,12 @@ connection = pymysql.connect(host='redoxfox1.mysql.pythonanywhere-services.com',
 
 @app.route('/')
 def hello_world():
+    cursor = connection.cursor()
+    id = '3'
+    sql = "INSERT INTO calendario (id) VALUES (%s);"
+    cursor.execute(sql, (id))
+    cursor.close()
+    connection.commit()
     return 'Hello from Flask!'
 
 if __name__ == "__main__":
