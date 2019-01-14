@@ -41,7 +41,7 @@ def home():
         nombre = rows["nombre"]
         pais = rows["pais"]
         continente = rows["continente"]
-        url = "http://localhost:8000/clasificacion/" + str(idlig) + "/"
+        url = "http://redoxfox1.pythonanywhere.com/clasificacion/" + str(idlig) + "/"
         resultado[cont] = (idlig,  nombre, pais, continente, url)
         cont = cont + 1
     sql1 = " select id from liga;"
@@ -58,6 +58,45 @@ def home():
         jornadas.append(i)
 
     return render_template('home.html', result=resultado, ligas_reg = ligas_reg, jornadas = jornadas )
+#-----------------------------------------------------------------------------------------------------------------------
+#Datos clasificacion
+#-----------------------------------------------------------------------------------------------------------------------
+@app.route('/clasificacion/<id>/', methods=['POST', 'GET'])
+def liga(id):
+    cursor=connection.cursor()
+    cursor.execute("SELECT * FROM calendario WHERE id_liga=%s and estado='PENDIENTE'", str(id))
+    result = cursor.fetchall()
+    resultado = {}
+    cont = 0
+    Jornada = 1
+    for rows in result:
+        idlig = rows["id_liga"]
+        nrofecha = rows["nro_fecha"]
+        idp = rows["id"]
+        ps = rows["equipo_1"]
+        ps2 = rows["equipo_2"]
+        gol_eq1 = rows["gol_eq1"]
+        gol_eq2 = rows["gol_eq2"]
+        cursor.execute("SELECT nombre FROM equipos WHERE id=%s", ps)
+        nom_eq = cursor.fetchone()
+        equipo_1 = nom_eq['nombre']
+        cursor.execute("SELECT nombre FROM equipos WHERE id=%s", ps2)
+        nom_eq2 = cursor.fetchone()
+        equipo_2 = nom_eq2['nombre']
+        url = "http://localhost:8000/resultado/" + str(idp) + "/" + str(idlig) + "/" + str(ps) + "/" + str(ps2)+ "/"
+        urlrev = "http://localhost:8000/"
+        if Jornada != nrofecha:
+           Jornada = nrofecha
+           cambio = 'true'
+           idj = "J" + str(Jornada) + "-P" + str(idp)
+           resultado[cont] = (equipo_1, gol_eq1, equipo_2, gol_eq2, url, idj, cambio)
+        else:
+           idj = "J" + str(Jornada) + "-P" + str(idp)
+           cambio = 'false'
+           resultado[cont] = (equipo_1, gol_eq1, equipo_2, gol_eq2, url, idj, cambio)
 
+        cont = cont + 1
+
+    return render_template('clasificacion.html', result=resultado, nombre=id, liga = 'española', url = urlrev )
 """if __name__ == "__main__":
     app.run(debug = True, port = 8000)"""
