@@ -8,12 +8,20 @@ from lib.Oquicksort import quicksort
 from lib.calendario import fechas_liga
 
 # Connect to the database
+"""connection = pymysql.connect(host='localhost',
+                             user='root',
+                             password='123456',
+                             db='perfume',
+                             charset='utf8mb4',
+                             cursorclass=pymysql.cursors.DictCursor)"""
+
 connection = pymysql.connect(host='redoxfox1.mysql.pythonanywhere-services.com',
                              user='redoxfox1',
                              password='Fox841204',
                              db='redoxfox1$perfume',
                              charset='utf8mb4',
                              cursorclass=pymysql.cursors.DictCursor)
+
 app = Flask(__name__)
 
 #-----------------------------------------------------------------------------------------------------------------------
@@ -23,7 +31,7 @@ app = Flask(__name__)
 def home():
     cursor=connection.cursor()
     # Read a single record
-    sql = "SELECT * FROM liga " 
+    sql = "SELECT * FROM liga " #
     cursor.execute(sql)
     result = cursor.fetchall()
     resultado = {}
@@ -50,4 +58,6 @@ def home():
         jornadas.append(i)
 
     return render_template('home.html', result=resultado, ligas_reg = ligas_reg, jornadas = jornadas )
-    
+
+"""if __name__ == "__main__":
+    app.run(debug = True, port = 8000)"""
