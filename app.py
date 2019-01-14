@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """# A very simple Flask Hello World app for you to get started with...
 
 from flask import Flask
@@ -35,10 +36,10 @@ from lib.Oquicksort import quicksort
 from lib.calendario import fechas_liga
 
 # Connect to the database
-connection = pymysql.connect(host='redoxfox1.mysql.pythonanywhere-services.com',
-                             user='redoxfox1',
-                             password='Fox841204',
-                             db='redoxfox1$perfume',
+connection = pymysql.connect(host='localhost',
+                             user='root',
+                             password='123456',
+                             db='perfume',
                              charset='utf8mb4',
                              cursorclass=pymysql.cursors.DictCursor)
 app = Flask(__name__)
