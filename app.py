@@ -967,5 +967,3 @@ def gestion_partido():
         fecha = request.form['jornadas']
         return redirect(url_for('reasignar', idfecha=fecha, dliga=liga))
 
- """if __name__ == "__main__":
-    app.run(debug = True, port = 8000)"""
